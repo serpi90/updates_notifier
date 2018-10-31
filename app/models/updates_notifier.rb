@@ -22,7 +22,7 @@ class UpdatesNotifier < ActiveRecord::Base
   end
 private
   def self.callback_url()
-    return Setting.plugin_redmine_updates_notifier[:callback_url]
+    return Setting.plugin_updates_notifier['callback_url']
   end
   def self.post_to_server(data)
     client = HTTPClient.new
