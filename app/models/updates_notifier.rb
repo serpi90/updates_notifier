@@ -28,8 +28,12 @@ private
     client = HTTPClient.new
     client.debug_dev = STDOUT if $DEBUG
     Rails.logger.debug("UPDATES_NOTIFIER: Posting update back to #{self.callback_url} : #{data.to_json}")
-    resp = client.post(self.callback_url, data)
-    Rails.logger.debug("UPDATES_NOTIFIER: Response code from #{self.callback_url}: #{resp.status_code.to_s}")
-    return resp
+    response = client.post(self.callback_url, data)
+    if response.status_code >= 400
+      Rails.logger.warn("UPDATES_NOTIFIER: Response code from #{self.callback_url}: #{response.status_code.to_s}")
+    else
+      Rails.logger.debug("UPDATES_NOTIFIER: Response code from #{self.callback_url}: #{response.status_code.to_s}")
+    end
+    return response
   end
 end
